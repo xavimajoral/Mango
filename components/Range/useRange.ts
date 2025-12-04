@@ -22,7 +22,7 @@ export function useRange({
   const rangeRef = useRef<HTMLDivElement>(null);
 
   const [minValue, maxValue] = range;
-  const MIN_GAP = 3;
+  const MIN_GAP = 6;
 
   const valueToPercentage = (val: number) => ((val - min) / (max - min)) * 100;
 

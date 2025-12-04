@@ -207,8 +207,8 @@ describe('useRange', () => {
         result.current.promptValue('min');
       });
 
-      // Should be clamped to maxValue - MIN_GAP (30 - 3 = 27)
-      expect(onChange).toHaveBeenCalledWith([27, 30]);
+      // Should be clamped to maxValue - MIN_GAP (30 - 6 = 24)
+      expect(onChange).toHaveBeenCalledWith([24, 30]);
     });
 
     it('should respect MIN_GAP constraint for max value', () => {
@@ -223,8 +223,8 @@ describe('useRange', () => {
         result.current.promptValue('max');
       });
 
-      // Should be clamped to minValue + MIN_GAP (25 + 3 = 28)
-      expect(onChange).toHaveBeenCalledWith([25, 28]);
+      // Should be clamped to minValue + MIN_GAP (25 + 6 = 31)
+      expect(onChange).toHaveBeenCalledWith([25, 31]);
     });
 
     it('should clamp min value to range bounds', () => {
