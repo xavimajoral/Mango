@@ -52,7 +52,7 @@ For more installation options, visit the [official pnpm documentation](https://p
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/xavimajoral/Mango
+git clone https://github.com/xavimajoral/mango
 cd mango
 ```
 
@@ -210,7 +210,7 @@ This project is configured for automatic deployment to GitHub Pages using GitHub
 
 **Automatic Deployment:**
 - Every push to the `main` branch triggers a build and deployment
-- The site is automatically published to: `https://xavimajoral.github.io/Mango/`
+- The site is automatically published to: `https://xavimajoral.github.io/mango/`
 
 ## 🧪 Mock Services
 
