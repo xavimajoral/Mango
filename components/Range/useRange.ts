@@ -31,6 +31,11 @@ export function useRange({
     setIsDragging(handle);
   };
 
+  const handleTouchStart = (handle: 'min' | 'max', e: React.TouchEvent) => {
+    e.preventDefault();
+    setIsDragging(handle);
+  };
+
   // Prompt new value on clicking the label for Exercise 1
   const promptValue = (type: 'min' | 'max') => {
     const currentValue = type === 'min' ? minValue : maxValue;
@@ -57,14 +62,18 @@ export function useRange({
     }
   };
 
-  // Helper function to get clamped value from a mouse event
+  // Helper function to get clamped value from a mouse or touch event
   const getClampedValue = useCallback(
-    (e: MouseEvent): number | null => {
+    (e: MouseEvent | TouchEvent): number | null => {
       if (!rangeRef.current) {
         return null;
       }
       const rect = rangeRef.current.getBoundingClientRect();
-      const percentage = ((e.clientX - rect.left) / rect.width) * 100;
+      const clientX = 'touches' in e ? e.touches[0]?.clientX : e.clientX;
+      if (clientX === undefined) {
+        return null;
+      }
+      const percentage = ((clientX - rect.left) / rect.width) * 100;
       const rawValue = min + (percentage / 100) * (max - min);
       return Math.max(min, Math.min(max, rawValue));
     },
@@ -73,16 +82,26 @@ export function useRange({
 
   // Helper function to setup and cleanup drag event listeners
   const setupDragListeners = useCallback(
-    (handleMouseMove: (e: MouseEvent) => void) => {
+    (handleMove: (e: MouseEvent | TouchEvent) => void) => {
+      const handleMouseMove = (e: MouseEvent) => handleMove(e);
+      const handleTouchMove = (e: TouchEvent) => {
+        e.preventDefault();
+        handleMove(e);
+      };
       const handleMouseUp = () => setIsDragging(null);
+      const handleTouchEnd = () => setIsDragging(null);
 
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
       document.body.classList.add('dragging');
 
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
         document.body.classList.remove('dragging');
       };
     },
@@ -95,7 +114,7 @@ export function useRange({
       return;
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMove = (e: MouseEvent | TouchEvent) => {
       const clampedValue = getClampedValue(e);
       if (clampedValue === null) {
         return;
@@ -112,7 +131,7 @@ export function useRange({
       }
     };
 
-    return setupDragListeners(handleMouseMove);
+    return setupDragListeners(handleMove);
   }, [
     isDragging,
     min,
@@ -131,7 +150,7 @@ export function useRange({
       return;
     }
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMove = (e: MouseEvent | TouchEvent) => {
       const clampedValue = getClampedValue(e);
       if (clampedValue === null) {
         return;
@@ -154,7 +173,7 @@ export function useRange({
       }
     };
 
-    return setupDragListeners(handleMouseMove);
+    return setupDragListeners(handleMove);
   }, [
     isDragging,
     minValue,
@@ -171,6 +190,7 @@ export function useRange({
     hoveredHandle,
     setHoveredHandle,
     handleMouseDown,
+    handleTouchStart,
     promptValue,
     valueToPercentage,
   };

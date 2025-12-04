@@ -24,6 +24,7 @@ export default function Range({
     hoveredHandle,
     setHoveredHandle,
     handleMouseDown,
+    handleTouchStart,
     promptValue,
     valueToPercentage,
   } = useRange({ min, max, range, onChange, fixedValues });
@@ -106,6 +107,7 @@ export default function Range({
               className={getClassName(type)}
               style={{ left: `${percentage}%` }}
               onMouseDown={(e) => handleMouseDown(type, e)}
+              onTouchStart={(e) => handleTouchStart(type, e)}
               onMouseEnter={() => setHoveredHandle(type)}
               onMouseLeave={() => setHoveredHandle(null)}
               role="slider"
