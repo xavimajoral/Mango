@@ -46,21 +46,6 @@ If you don't have pnpm installed, you can install it using one of these methods:
 npm install -g pnpm
 ```
 
-**Using Homebrew (macOS):**
-```bash
-brew install pnpm
-```
-
-**Using curl (Unix-like systems):**
-```bash
-curl -fsSL https://get.pnpm.io/install.sh | sh -
-```
-
-**Using PowerShell (Windows):**
-```powershell
-iwr https://get.pnpm.io/install.ps1 -useb | iex
-```
-
 For more installation options, visit the [official pnpm documentation](https://pnpm.io/installation).
 
 ### Installation
@@ -216,6 +201,16 @@ const {
   valueToPercentage,   // Convert value to percentage
 } = useRange({ min, max, range, onChange, fixedValues });
 ```
+
+## 🚀 Deployment
+
+### GitHub Pages
+
+This project is configured for automatic deployment to GitHub Pages using GitHub Actions.
+
+**Automatic Deployment:**
+- Every push to the `main` branch triggers a build and deployment
+- The site is automatically published to: `https://xavimajoral.github.io/Mango/`
 
 ## 🧪 Mock Services
 
